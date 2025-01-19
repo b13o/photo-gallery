@@ -6,7 +6,9 @@ import { wrapPromise } from "@/utils/suspense";
 import { fetchHeroPhoto } from "@/utils/api";
 import SearchBar from "./SearchBar";
 
+// 外側で宣言
 const imageResource = wrapPromise(fetchHeroPhoto("nature"));
+
 const BGImage = () => {
   const photo = imageResource.read();
   return (
