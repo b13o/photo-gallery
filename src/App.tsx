@@ -1,27 +1,15 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "./components/ui/button";
+import Hero from "./components/Hero";
 
 function App() {
   return (
     <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline">テスト</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>テスト</DialogTitle>
-          </DialogHeader>
-          <Input />
-        </DialogContent>
-      </Dialog>
+      <main className="min-h-screen bg-background">
+        <Hero query="" handleSearch={(query) => console.log(query)} />
+        <div className="container mx-auto space-y-8 py-8">
+          {/* 検索していない時はカテゴリーの一覧を表示 */}
+          {/* 検索の場合 */}
+        </div>
+      </main>
     </>
   );
 }
