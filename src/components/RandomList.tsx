@@ -8,9 +8,14 @@ import PhotoCard from "./PhotoCard";
 interface PhotoRowProps {
   category: string;
   imageResource: ReturnType<typeof wrapPromise<BasicPhoto[]>>;
+  handleSelectPhoto: (photoId: string) => void;
 }
 
-function PhotoRow({ imageResource, category }: PhotoRowProps) {
+function PhotoRow({
+  imageResource,
+  category,
+  handleSelectPhoto,
+}: PhotoRowProps) {
   const photos = imageResource.read();
   return (
     <div className="relative py-4">
@@ -18,7 +23,12 @@ function PhotoRow({ imageResource, category }: PhotoRowProps) {
       <div className="group relative">
         <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth">
           {photos.map((photo) => (
-            <PhotoCard key={photo.id} className="min-w-[300px]" photo={photo} />
+            <PhotoCard
+              key={photo.id}
+              className="min-w-[300px]"
+              photo={photo}
+              handleSelectPhoto={handleSelectPhoto}
+            />
           ))}
         </div>
       </div>
@@ -41,11 +51,14 @@ function RowSkeleton() {
   );
 }
 
-export default function RandomList() {
+interface RandomListProps {
+  handleSelectPhoto: (photoId: string) => void;
+}
+export default function RandomList({ handleSelectPhoto }: RandomListProps) {
   const resourceMap = {
     Discover: useCategoryPhotoResource(""),
-    // Nature: useCategoryPhotoResource("nature"),
-    // Minimalism: useCategoryPhotoResource("Minimalism"),
+    Nature: useCategoryPhotoResource("nature"),
+    Minimalism: useCategoryPhotoResource("Minimalism"),
   };
 
   return (
@@ -60,6 +73,7 @@ export default function RandomList() {
             key={category}
             category={category}
             imageResource={resource}
+            handleSelectPhoto={handleSelectPhoto}
           />
         ))}
       </Suspense>

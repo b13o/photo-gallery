@@ -1,8 +1,8 @@
 import { BasicPhoto, DetailePhoto, SearchPhoto } from "@/types/photo";
 
 const BASE_URL = "https://api.unsplash.com";
-const RANDOM_PHOTO_COUNT = 2; // プロダクションでは 4
-const SEARCH_PHOTO_COUNT = 2; // プロダクションでは 10
+const RANDOM_PHOTO_COUNT = 4; // プロダクションでは 4
+const SEARCH_PHOTO_COUNT = 10; // プロダクションでは 10
 const SEARCH_PHOTO_PAGE = 1;
 
 function getHeaders(): HeadersInit {

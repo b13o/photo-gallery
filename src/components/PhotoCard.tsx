@@ -6,15 +6,17 @@ import { BasicPhoto } from "@/types/photo";
 interface PhotoCardProps {
   photo: BasicPhoto;
   className?: string;
+  handleSelectPhoto: (photoId: string) => void;
 }
 
-function PhotoCard({ className, photo }: PhotoCardProps) {
+function PhotoCard({ className, photo, handleSelectPhoto }: PhotoCardProps) {
   return (
     <div
       className={cn(
         "relative aspect-[3/2] overflow-hidden rounded-lg bg-muted transition-transform duration-300 scale-95 hover:scale-100",
         className
       )}
+      onClick={() => handleSelectPhoto(photo.id)}
     >
       <img
         src={photo.urls.regular}

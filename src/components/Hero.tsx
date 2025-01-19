@@ -1,16 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { wrapPromise } from "@/utils/suspense";
 import { fetchHeroPhoto } from "@/utils/api";
 import SearchBar from "./SearchBar";
+import { BasicPhoto } from "@/types/photo";
 
-// 外側で宣言
 const imageResource = wrapPromise(fetchHeroPhoto("nature"));
-
-const BGImage = () => {
+const BGImage = ({ onLoad }: { onLoad: (data: BasicPhoto) => void }) => {
   const photo = imageResource.read();
+  useEffect(() => {
+    onLoad(photo);
+  }, [photo, onLoad]);
+
   return (
     <img
       src={photo.urls.regular}
@@ -23,9 +26,20 @@ const BGImage = () => {
 type HeroProps = {
   query: string;
   handleSearch: (query: string) => void;
+  handleSelectPhoto: (photoId: string) => void;
 };
 
-export default function Hero({ handleSearch, query }: HeroProps) {
+export default function Hero({
+  handleSearch,
+  query,
+  handleSelectPhoto,
+}: HeroProps) {
+  const [photoData, setPhotoData] = useState<BasicPhoto | null>(null);
+
+  const onLoad = useCallback((data: BasicPhoto) => {
+    setPhotoData(data);
+  }, []);
+
   return (
     <div className="relative h-[70vh] min-h-[600px] w-full overflow-hidden">
       <ErrorBoundary
@@ -36,7 +50,7 @@ export default function Hero({ handleSearch, query }: HeroProps) {
             <div className="h-10 w-10 flex items-center justify-center animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" />
           }
         >
-          <BGImage />
+          <BGImage onLoad={onLoad} />
         </Suspense>
       </ErrorBoundary>
 
@@ -44,7 +58,11 @@ export default function Hero({ handleSearch, query }: HeroProps) {
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent">
         <div className="container mx-auto flex h-full max-w-screen-xl items-center">
           <div className="max-w-2xl space-y-8 text-white">
-            <Button size="lg" className="bg-gray-500/50">
+            <Button
+              size="lg"
+              className="bg-gray-500/50"
+              onClick={() => handleSelectPhoto(photoData?.id || "")}
+            >
               <Info className="mr-2 h-5 w-5" />
               Header Info
             </Button>

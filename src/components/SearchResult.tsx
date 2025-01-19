@@ -4,9 +4,10 @@ import { searchPhotos } from "@/utils/api";
 
 interface SearchResultProps {
   query: string;
+  handleSelectPhoto: (photoId: string) => void;
 }
 
-const SeachResult = memo(({ query }: SearchResultProps) => {
+const SeachResult = memo(({ query, handleSelectPhoto }: SearchResultProps) => {
   const photos = use(searchPhotos(query));
 
   return (
@@ -17,7 +18,11 @@ const SeachResult = memo(({ query }: SearchResultProps) => {
 
       <div className="grid grid-cols-2 gap-4 ">
         {photos?.map((photo) => (
-          <PhotoCard key={photo.id} photo={photo} />
+          <PhotoCard
+            key={photo.id}
+            photo={photo}
+            handleSelectPhoto={handleSelectPhoto}
+          />
         ))}
       </div>
     </>
