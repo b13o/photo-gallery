@@ -52,7 +52,35 @@ export async function fetchPhotoDetail(photoId: string): Promise<DetailePhoto> {
   return response.json();
 }
 
-export async function searchPhotos(query: string): Promise<BasicPhoto[]> {
+// export async function searchPhotos(query: string): Promise<BasicPhoto[]> {
+//   const params = new URLSearchParams({
+//     query,
+//     per_page: SEARCH_PHOTO_COUNT.toString(),
+//     page: SEARCH_PHOTO_PAGE.toString(),
+//   });
+
+//   const response = await fetch(`${BASE_URL}/search/photos?${params}`, {
+//     headers: getHeaders(),
+//   });
+
+//   if (!response.ok) {
+//     throw new Error("Failed to search photos");
+//   }
+
+//   const data: SearchPhoto = await response.json();
+//   return data.results;
+// }
+
+const cache = new Map();
+
+export function searchPhotos(url: string): Promise<BasicPhoto[]> {
+  if (!cache.has(url)) {
+    cache.set(url, fetchSearchPhotos(url));
+  }
+  return cache.get(url);
+}
+
+export async function fetchSearchPhotos(query: string): Promise<BasicPhoto[]> {
   const params = new URLSearchParams({
     query,
     per_page: SEARCH_PHOTO_COUNT.toString(),
