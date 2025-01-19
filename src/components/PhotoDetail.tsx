@@ -45,8 +45,22 @@ function PhotoDetailModal({ imageResource, onClose }: PhotoDetailModalProps) {
           <DialogTitle className="text-3xl font-bold">
             {photo.alt_description}
           </DialogTitle>
+          {/* Guideline: Attribution is required */}
           <span className="text-muted-foreground">
-            photo by @{photo.user.username}
+            Photo by{" "}
+            <a
+              className="underline"
+              href={`https://unsplash.com/@${photo.user.username}?utm_source=your_app_name&utm_medium=referral`}
+            >
+              {photo.user.username}
+            </a>{" "}
+            on{" "}
+            <a
+              className="underline"
+              href="https://unsplash.com/?utm_source=your_app_name&utm_medium=referral"
+            >
+              Unsplash
+            </a>
           </span>
 
           <div className="flex flex-wrap gap-8">
